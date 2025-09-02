@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Irish_Grover } from "next/font/google";
 import "./globals.css";
 
+import { AuthProvider } from "@/context/auth";
+
 const irishGrover = Irish_Grover({
   weight: "400",
   subsets: ["latin"],
@@ -20,7 +22,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${irishGrover.variable}`}>{children}</body>
+      <body className={`${irishGrover.variable}`}>
+        <AuthProvider>{children}</AuthProvider>
+      </body>
     </html>
   );
 }
