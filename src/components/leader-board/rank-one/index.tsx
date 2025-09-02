@@ -1,3 +1,5 @@
+"use client";
+
 import { Avatar1SVG, LeaderBoardSVG, MedalSVG } from "@/svgs";
 
 const RankOne: React.FC = () => {
