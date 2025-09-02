@@ -1,6 +1,6 @@
 // "use client";
 
-import { Avatar1SVG } from "@/svgs";
+// import { Avatar1SVG } from "@/svgs";
 import Image from "next/image";
 
 const RankOne: React.FC = () => {
