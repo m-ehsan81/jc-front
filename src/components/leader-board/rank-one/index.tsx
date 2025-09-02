@@ -14,7 +14,10 @@ const RankOne: React.FC = () => {
       </div>
 
       <div className="relative mt-6">
-        <Avatar1SVG size="96" />
+        <div className="rounded-full overflow-hidden bg-[linear-gradient(180deg,#F6A50C_0%,rgba(246,165,12,0.20)_139.38%)]">
+          <Image alt="medal" src="/assets/avatar.png" width={96} height={96} />
+        </div>
+        {/* <Avatar1SVG size="96" /> */}
         <span className="absolute -bottom-[1.375rem] right-[1.25rem]">
           <Image alt="medal" src="/assets/medal.png" width={56} height={56} />
         </span>
