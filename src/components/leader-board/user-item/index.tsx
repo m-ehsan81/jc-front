@@ -1,3 +1,5 @@
+"use client";
+
 import { Avatar1SVG } from "@/svgs";
 import { UserItemProps } from "./type";
 
