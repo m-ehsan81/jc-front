@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import axios from "axios";
 
 const apiClient = axios.create({
@@ -10,6 +11,12 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   (config) => {
+    const token = Cookies.get("access-token");
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
     return config;
   },
   (error) => {

@@ -1,4 +1,3 @@
-// hooks/useApi.js
 "use client";
 
 import { useAuth } from "@/context/auth";

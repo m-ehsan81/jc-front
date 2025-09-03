@@ -1,6 +1,11 @@
+"use client";
+
+import { useEffect } from "react";
+
 import BackButton from "@/components/back-button";
 import { RankOne, UserItem } from "@/components/leader-board";
 import { UserItemProps } from "@/components/leader-board/user-item/type";
+import apiClient from "@/lib/axios";
 
 const DATA: UserItemProps[] = [
   { username: "Shayan Sharifi", count: 50, rank: 2 },
@@ -13,6 +18,12 @@ const DATA: UserItemProps[] = [
 ];
 
 const LeaderBoard: React.FC = () => {
+  useEffect(() => {
+    (async () => {
+      const response = await apiClient.get("/Score/GetLeaderBoard");
+    })();
+  }, []);
+
   return (
     <div className="p-6">
       <BackButton />

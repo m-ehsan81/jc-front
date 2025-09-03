@@ -7,12 +7,11 @@ import AuthWrapper from "@/components/auth-warpper";
 import { CustomInput, CustomPassInput } from "@/components/customs";
 
 import { SignInType } from "./type";
-import { useApi } from "@/hooks/use-api";
 import { useAuth } from "@/context/auth";
 import { useRouter, useSearchParams } from "next/navigation";
+import apiClient from "@/lib/axios";
 
 const SignIn: React.FC = () => {
-  const api = useApi();
   const { login } = useAuth();
 
   const router = useRouter();
@@ -22,7 +21,7 @@ const SignIn: React.FC = () => {
 
   const submitHandler = async (values: SignInType) => {
     try {
-      const response = await api.post<ResType<string>>(
+      const response = await apiClient.post<ResType<string>>(
         "/Accounts/Login",
         values
       );
