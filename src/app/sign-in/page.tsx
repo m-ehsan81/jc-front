@@ -16,7 +16,9 @@ const SignIn: React.FC = () => {
     try {
       const response = await api.post("/Accounts/Login", values);
       console.log(response);
-    } catch (error) {}
+    } catch (error) {
+      alert(error)
+    }
   };
 
   const { getFieldProps, handleSubmit } = useFormik<SignInType>({
@@ -27,7 +29,7 @@ const SignIn: React.FC = () => {
   return (
     <form onSubmit={handleSubmit}>
       <AuthWrapper title="Sign In" type="sign-in">
-        <CustomInput label="User Name" {...getFieldProps("email")} />
+        <CustomInput label="Email" {...getFieldProps("email")} />
 
         <div>
           <CustomPassInput label="Password" {...getFieldProps("password")} />
