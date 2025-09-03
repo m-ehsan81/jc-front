@@ -7,17 +7,27 @@ import AuthWrapper from "@/components/auth-warpper";
 import { CustomInput, CustomPassInput } from "@/components/customs";
 
 import { SignInType } from "./type";
+import { useApi } from "@/hooks/use-api";
 
 const SignIn: React.FC = () => {
+  const api = useApi();
+
+  const submitHandler = async (values: SignInType) => {
+    try {
+      const response = await api.post("/Accounts/Login", values);
+      console.log(response);
+    } catch (error) {}
+  };
+
   const { getFieldProps, handleSubmit } = useFormik<SignInType>({
     initialValues: { email: "", password: "" },
-    onSubmit: (values) => console.log(values),
+    onSubmit: submitHandler,
   });
 
   return (
     <form onSubmit={handleSubmit}>
       <AuthWrapper title="Sign In" type="sign-in">
-        <CustomInput label="User Name" {...getFieldProps("username")} />
+        <CustomInput label="User Name" {...getFieldProps("email")} />
 
         <div>
           <CustomPassInput label="Password" {...getFieldProps("password")} />
