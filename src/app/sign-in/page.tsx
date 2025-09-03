@@ -8,16 +8,32 @@ import { CustomInput, CustomPassInput } from "@/components/customs";
 
 import { SignInType } from "./type";
 import { useApi } from "@/hooks/use-api";
+import { useAuth } from "@/context/auth";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const SignIn: React.FC = () => {
   const api = useApi();
+  const { login } = useAuth();
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const fromParams = searchParams.get("from") || "/home";
 
   const submitHandler = async (values: SignInType) => {
     try {
-      const response = await api.post("/Accounts/Login", values);
-      console.log(response);
+      const response = await api.post<ResType<string>>(
+        "/Accounts/Login",
+        values
+      );
+      const { data, isSuccess } = response.data;
+
+      if (isSuccess) {
+        await login(data);
+        router.replace(fromParams);
+      }
     } catch (error) {
-      alert(error)
+      alert(error);
     }
   };
 
