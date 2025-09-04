@@ -11,6 +11,8 @@ import {
 import Cookies from "js-cookie";
 
 import { AuthContextType } from "./type";
+import axios from "axios";
+import apiClient from "@/lib/axios";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -26,6 +28,34 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const logout = () => {
     Cookies.remove("access-token");
     setToken(null);
+  };
+
+  const refreshAuthToken = async (): Promise<string | null> => {
+    try {
+      const accessToken = Cookies.get("access-token");
+      if (!accessToken) {
+        throw new Error("No refresh token available");
+      }
+
+      const response = await apiClient.post("/Accounts/RefreshToken", {
+        accessToken,
+      });
+      const { token: newToken, user } = response.data;
+
+      Cookies.set("token", newToken, { expires: 1 });
+      Cookies.set("user", JSON.stringify(user), { expires: 1 });
+
+      // dispatch({
+      //   type: 'LOGIN_SUCCESS',
+      //   payload: { user, token: newToken }
+      // });
+
+      return newToken;
+    } catch (error) {
+      console.error("Token refresh failed:", error);
+      logout();
+      throw error;
+    }
   };
 
   useEffect(() => {
@@ -46,6 +76,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     login,
     logout,
     isLoading,
+    refreshAuthToken,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
