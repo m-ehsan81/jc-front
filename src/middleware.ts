@@ -1,19 +1,14 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const protectedRoutes = [
-  "/home",
-  "/leader-board",
-  "/profile",
-  "/settings",
-  "profile",
-];
-const publicRoutes = ["/sign-in", "/register"];
+const protectedRoutes = ["/home", "/leader-board", "/profile", "/settings"];
+const publicRoutes = ["/sign-in", "/sign-up"];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const token = request.cookies.get("access-token")?.value;
+  const refreshToken = request.cookies.get("refresh-token")?.value;
 
   const isProtectedRoute = protectedRoutes.some((route) =>
     pathname.startsWith(route)
@@ -23,13 +18,19 @@ export function middleware(request: NextRequest) {
     pathname.startsWith(route)
   );
 
-  if (isProtectedRoute && !token) {
+  if (isProtectedRoute && (!token || !refreshToken)) {
     const loginUrl = new URL("/sign-in", request.url);
     loginUrl.searchParams.set("from", pathname);
-    return NextResponse.redirect(loginUrl);
+
+    const response = NextResponse.redirect(loginUrl);
+
+    response.cookies.delete("access-token");
+    response.cookies.delete("refresh-token");
+
+    return response;
   }
 
-  if (isPublicRoute && token) {
+  if (isPublicRoute && (token || refreshToken)) {
     return NextResponse.redirect(new URL("/home", request.url));
   }
 

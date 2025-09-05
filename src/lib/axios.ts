@@ -41,20 +41,27 @@ apiClient.interceptors.response.use(
       originalRequest._retry = true;
 
       const accessToken = Cookies.get("access-token");
-      if (!accessToken) {
+      const refreshToken = Cookies.get("refresh-token");
+      if (!accessToken || !refreshToken) {
         throw new Error("No refresh token available");
       }
 
       try {
-        const response = await authAPI.get("/Accounts/RefreshToken", {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
+        const response = await authAPI.post(
+          "/Accounts/RefreshToken",
+          {
+            refreshToken,
+          },
+          {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        );
         const { token: newToken, user } = response.data;
 
         Cookies.set("token", newToken, { expires: 1 });
         Cookies.set("user", JSON.stringify(user), { expires: 1 });
 
-        originalRequest.headers.Authorization = `Bearer ${'test'}`;
+        originalRequest.headers.Authorization = `Bearer ${"test"}`;
         return apiClient(originalRequest);
       } catch (refreshError) {
         // console.error("Token refresh failed:", refreshError);

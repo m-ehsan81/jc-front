@@ -2,32 +2,61 @@
 
 import {
   createContext,
-  useState,
   useContext,
   useEffect,
   PropsWithChildren,
   FC,
+  useReducer,
 } from "react";
 import Cookies from "js-cookie";
 
-import { AuthContextType } from "./type";
-import axios from "axios";
+import { AuthAction, AuthContextType, AuthState } from "./type";
 import apiClient from "@/lib/axios";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [token, setToken] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+const authReducer = (state: AuthState, action: AuthAction): AuthState => {
+  switch (action.type) {
+    case "SET_TOKEN":
+      return {
+        isLoading: false,
+        token: action.payload.token,
+        refreshToken: action.payload.refreshToken,
+      };
+    case "REMOVE_TOKEN":
+      return {
+        isLoading: false,
+        token: null,
+        refreshToken: null,
+      };
+    default:
+      return state;
+  }
+};
 
-  const login = async (newToken: string) => {
-    Cookies.set("access-token", newToken, { expires: 7 });
-    setToken(newToken);
+// Initial state
+const initialState: AuthState = {
+  isLoading: true,
+  token: null,
+  refreshToken: null,
+};
+
+export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
+  const [state, dispatch] = useReducer(authReducer, initialState);
+
+  const login = async (token: string, refToken: string) => {
+    Cookies.set("access-token", token, { expires: 7 });
+    Cookies.set("refresh-token", refToken, { expires: 7 });
+    dispatch({
+      type: "SET_TOKEN",
+      payload: { token: token, refreshToken: refToken },
+    });
   };
 
   const logout = () => {
     Cookies.remove("access-token");
-    setToken(null);
+    Cookies.remove("refresh-token");
+    dispatch({ type: "REMOVE_TOKEN" });
   };
 
   const refreshAuthToken = async (): Promise<string | null> => {
@@ -46,7 +75,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
       Cookies.set("user", JSON.stringify(user), { expires: 1 });
 
       // dispatch({
-      //   type: 'LOGIN_SUCCESS',
+      //   type: 'LOGIN',
       //   payload: { user, token: newToken }
       // });
 
@@ -61,22 +90,26 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     const initializeAuth = async () => {
       const storedToken = Cookies.get("access-token");
+      const storedRefToken = Cookies.get("refresh-token");
 
-      if (storedToken) {
-        setToken(storedToken);
+      if (storedToken && storedRefToken) {
+        dispatch({
+          type: "SET_TOKEN",
+          payload: { token: storedToken, refreshToken: storedRefToken },
+        });
+      } else {
+        logout();
       }
-      setIsLoading(false);
     };
 
     initializeAuth();
   }, []);
 
   const value: AuthContextType = {
-    token,
-    login,
+    state,
     logout,
-    isLoading,
     refreshAuthToken,
+    login,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

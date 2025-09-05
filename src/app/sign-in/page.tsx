@@ -6,7 +6,7 @@ import { useFormik } from "formik";
 import AuthWrapper from "@/components/auth-warpper";
 import { CustomInput, CustomPassInput } from "@/components/customs";
 
-import { SignInType } from "./type";
+import { SignInRes, SignInType } from "./type";
 import { useAuth } from "@/context/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import apiClient from "@/lib/axios";
@@ -21,14 +21,14 @@ const SignIn: React.FC = () => {
 
   const submitHandler = async (values: SignInType) => {
     try {
-      const response = await apiClient.post<ResType<string>>(
+      const response = await apiClient.post<ResType<SignInRes>>(
         "/Accounts/Login",
         values
       );
       const { data, isSuccess } = response.data;
 
       if (isSuccess) {
-        await login(data);
+        await login(data.token, data.refreshToken);
         router.replace(fromParams);
       }
     } catch (error) {
