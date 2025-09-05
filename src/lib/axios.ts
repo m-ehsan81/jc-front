@@ -1,5 +1,9 @@
 import Cookies from "js-cookie";
 import axios from "axios";
+interface RefreshTokenRes {
+  token: string;
+  refreshToken: string;
+}
 
 const baseURL =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000/api";
@@ -7,7 +11,6 @@ const baseURL =
 // Create axios instance for auth API
 export const authAPI = axios.create({
   baseURL,
-  withCredentials: true,
 });
 
 const apiClient = axios.create({
@@ -47,7 +50,7 @@ apiClient.interceptors.response.use(
       }
 
       try {
-        const response = await authAPI.post(
+        const response = await authAPI.post<ResType<RefreshTokenRes>>(
           "/Accounts/RefreshToken",
           {
             refreshToken,
@@ -56,12 +59,12 @@ apiClient.interceptors.response.use(
             headers: { Authorization: `Bearer ${accessToken}` },
           }
         );
-        const { token: newToken, user } = response.data;
+        const { token, refreshToken: newRefToken } = response.data.data;
 
-        Cookies.set("token", newToken, { expires: 1 });
-        Cookies.set("user", JSON.stringify(user), { expires: 1 });
+        Cookies.set("access-token", token, { expires: 1 });
+        Cookies.set("refresh-token", newRefToken, { expires: 1 });
 
-        originalRequest.headers.Authorization = `Bearer ${"test"}`;
+        originalRequest.headers.Authorization = `Bearer ${token}`;
         return apiClient(originalRequest);
       } catch (refreshError) {
         // console.error("Token refresh failed:", refreshError);
