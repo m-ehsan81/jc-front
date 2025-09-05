@@ -10,8 +10,9 @@ import { SignInRes, SignInType } from "./type";
 import { useAuth } from "@/context/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import apiClient from "@/lib/axios";
+import { Suspense } from "react";
 
-const SignIn: React.FC = () => {
+const SignInPage = () => {
   const { login } = useAuth();
 
   const router = useRouter();
@@ -42,21 +43,31 @@ const SignIn: React.FC = () => {
   });
 
   return (
-    <form onSubmit={handleSubmit}>
-      <AuthWrapper title="Sign In" type="sign-in">
-        <CustomInput label="Email" {...getFieldProps("email")} />
+    <Suspense>
+      <form onSubmit={handleSubmit}>
+        <AuthWrapper title="Sign In" type="sign-in">
+          <CustomInput label="Email" {...getFieldProps("email")} />
 
-        <div>
-          <CustomPassInput label="Password" {...getFieldProps("password")} />
-          <Link
-            href="/forget-password"
-            className="!text-[#5CF8FD] text-[1.125rem]"
-          >
-            Forgot your pass?
-          </Link>
-        </div>
-      </AuthWrapper>
-    </form>
+          <div>
+            <CustomPassInput label="Password" {...getFieldProps("password")} />
+            <Link
+              href="/forget-password"
+              className="!text-[#5CF8FD] text-[1.125rem]"
+            >
+              Forgot your pass?
+            </Link>
+          </div>
+        </AuthWrapper>
+      </form>
+    </Suspense>
+  );
+};
+
+const SignIn: React.FC = () => {
+  return (
+    <Suspense>
+      <SignInPage />
+    </Suspense>
   );
 };
 

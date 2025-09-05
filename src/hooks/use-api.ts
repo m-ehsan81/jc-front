@@ -5,15 +5,15 @@ import apiClient from "@/lib/axios";
 import { useEffect } from "react";
 
 export const useApi = () => {
-  const { token } = useAuth();
+  const { state } = useAuth();
 
   useEffect(() => {
-    if (token) {
-      apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    if (state.token) {
+      apiClient.defaults.headers.common["Authorization"] = `Bearer ${state.token}`;
     } else {
       delete apiClient.defaults.headers.common["Authorization"];
     }
-  }, [token]);
+  }, [state.token]);
 
   return apiClient;
 };
