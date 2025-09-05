@@ -20,7 +20,7 @@ const userDataReducer = (state: UserState, action: UserAction): UserState => {
       };
     case "UPDATE_SCORE":
       return {
-        score: state.score !== null ? state.score + 1 : state.score,
+        score: state.score !== null ? ++state.score : state.score,
       };
     case "SET_USERNAME":
       return {
