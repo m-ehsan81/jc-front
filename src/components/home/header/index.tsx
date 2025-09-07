@@ -1,7 +1,13 @@
+import { CustomSkeleton } from "@/components/customs";
+import { useUserData } from "@/context/user-data";
 import { MenuSVG } from "@/svgs";
 import Image from "next/image";
 
 const HomeHeader: React.FC = () => {
+  const {
+    state: { username, email },
+  } = useUserData();
+
   return (
     <div className="flex justify-between items-center flex-row-reverse w-full">
       <MenuSVG />
@@ -11,7 +17,7 @@ const HomeHeader: React.FC = () => {
           <Image alt="avatar" src="/assets/avatar.png" width={40} height={40} />
         </div>
 
-        <span>Welcome Ehsan!</span>
+        <span>{username || email || <CustomSkeleton width="200px" />}</span>
       </div>
     </div>
   );

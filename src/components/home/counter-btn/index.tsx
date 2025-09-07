@@ -1,14 +1,7 @@
-"use client";
-
 import { useUserData } from "@/context/user-data";
-import { useEffect } from "react";
 
 const CounterBtn: React.FC = () => {
-  const { setInitialScore, updateScore, state } = useUserData();
-
-  useEffect(() => {
-    setInitialScore();
-  }, []);
+  const { updateScore, state } = useUserData();
 
   const clickHandler = () => {
     updateScore();

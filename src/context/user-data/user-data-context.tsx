@@ -14,17 +14,22 @@ const UserDataContext = createContext<UserContextType | undefined>(undefined);
 
 const userDataReducer = (state: UserState, action: UserAction): UserState => {
   switch (action.type) {
+    case "SET_INITIAL_DATA":
+      return action.payload;
     case "SET_SCORE":
       return {
+        ...state,
         score: action.payload,
       };
     case "UPDATE_SCORE":
       return {
+        ...state,
         score: state.score !== null ? ++state.score : state.score,
       };
-    case "SET_USERNAME":
+    case "SET_USERINFO":
       return {
-        score: 0,
+        ...state,
+        ...action.payload,
       };
     default:
       return state;
@@ -33,21 +38,25 @@ const userDataReducer = (state: UserState, action: UserAction): UserState => {
 
 const initialState: UserState = {
   score: null,
+  username: null,
+  email: null,
 };
 
 export const UserDataProvider: FC<PropsWithChildren> = ({ children }) => {
   const [state, dispatch] = useReducer(userDataReducer, initialState);
 
-  const setInitialScore = async () => {
+  const setInitialUserData = async () => {
     if (state.score === null) {
       try {
         const response = await apiClient.get<ResType<GetScoreRes>>(
           "/Score/GetScore"
         );
 
+        const { email, score, username } = response.data.data;
+
         dispatch({
-          type: "SET_SCORE",
-          payload: response.data.data.score,
+          type: "SET_INITIAL_DATA",
+          payload: { score, email, username },
         });
       } catch (error) {
         alert(error);
@@ -65,7 +74,7 @@ export const UserDataProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const value: UserContextType = {
     state,
-    setInitialScore,
+    setInitialUserData,
     updateScore,
   };
 
