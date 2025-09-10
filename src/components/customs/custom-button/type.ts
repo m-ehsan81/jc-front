@@ -4,4 +4,5 @@ export interface CustomButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
   startIcon?: ReactNode;
   endIcon?: ReactNode;
+  isLoading?: boolean;
 }
