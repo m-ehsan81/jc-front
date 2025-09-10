@@ -14,8 +14,12 @@ const UserDataContext = createContext<UserContextType | undefined>(undefined);
 
 const userDataReducer = (state: UserState, action: UserAction): UserState => {
   switch (action.type) {
+    case "START_FETCHING":
+      return { ...state, isLoading: true };
+    case "END_FETCHING":
+      return { ...state, isLoading: false };
     case "SET_INITIAL_DATA":
-      return action.payload;
+      return { ...state, ...action.payload };
     case "SET_SCORE":
       return {
         ...state,
@@ -40,6 +44,7 @@ const initialState: UserState = {
   score: null,
   username: null,
   email: null,
+  isLoading: false,
 };
 
 export const UserDataProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -47,6 +52,10 @@ export const UserDataProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const setInitialUserData = async () => {
     if (state.score === null) {
+      dispatch({
+        type: "START_FETCHING",
+      });
+
       try {
         const response = await apiClient.get<ResType<GetScoreRes>>(
           "/Score/GetScore"
@@ -60,6 +69,10 @@ export const UserDataProvider: FC<PropsWithChildren> = ({ children }) => {
         });
       } catch (error) {
         alert(error);
+      } finally {
+        dispatch({
+          type: "END_FETCHING",
+        });
       }
     }
   };

@@ -8,10 +8,13 @@ export interface UserState {
   score: null | number;
   username: string | null;
   email: string | null;
+  isLoading: boolean;
 }
 
 export type UserAction =
-  | { type: "SET_INITIAL_DATA"; payload: UserState }
+  | { type: "START_FETCHING" }
+  | { type: "END_FETCHING" }
+  | { type: "SET_INITIAL_DATA"; payload: Omit<UserState, "isLoading"> }
   | { type: "SET_SCORE"; payload: number }
   | { type: "UPDATE_SCORE" }
   | { type: "SET_USERINFO"; payload: Omit<UserState, "score"> };

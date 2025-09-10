@@ -1,24 +1,16 @@
-// components/CustomSkeleton.tsx
 import { CSSProperties } from "react";
+import clsx from "clsx";
+import { CustomSkeletonProps } from "./type";
 
-interface CustomSkeletonProps {
-  variant?: "text" | "circular" | "rectangular";
-  width?: string | number;
-  height?: string | number;
-  animation?: "pulse" | "wave" | "none";
-  className?: string;
-  borderRadius?: string;
-}
-
-const CustomSkeleton = ({
+const CustomSkeleton: React.FC<CustomSkeletonProps> = ({
   variant = "text",
   width = "100%",
-  height = "1rem",
+  height = "1.5rem",
   animation = "pulse",
   className = "",
   borderRadius = "0.25rem",
-}: CustomSkeletonProps) => {
-  const baseClasses = "bg-gray-300 dark:bg-gray-700";
+}) => {
+  const baseClasses = "bg-[rgba(159,159,159,0.5)]";
 
   const animationClasses = {
     pulse: "animate-pulse",
@@ -37,12 +29,11 @@ const CustomSkeleton = ({
         : borderRadius,
   };
 
+  const classes = clsx(baseClasses, animationClasses[animation], className);
+
   return (
-    <div
-      className={`${baseClasses} ${animationClasses[animation]} ${className}`}
-      style={variantStyles}
-    >
-      {animation === "wave" && <div className="wave-shimmer"></div>}
+    <div className={classes} style={variantStyles}>
+      {animation === "wave" && <div className="wave-shimmer" />}
     </div>
   );
 };
