@@ -4,7 +4,11 @@ import Link from "next/link";
 import { useFormik } from "formik";
 
 import AuthWrapper from "@/components/auth-warpper";
-import { CustomInput, CustomPassInput } from "@/components/customs";
+import {
+  CustomButton,
+  CustomInput,
+  CustomPassInput,
+} from "@/components/customs";
 
 import { SignInRes, SignInType } from "./type";
 import { useAuth } from "@/context/auth";
@@ -43,23 +47,35 @@ const SignInPage = () => {
   });
 
   return (
-    <Suspense>
-      <form onSubmit={handleSubmit}>
-        <AuthWrapper title="Sign In" type="sign-in">
-          <CustomInput label="Email" {...getFieldProps("email")} />
-
-          <div>
-            <CustomPassInput label="Password" {...getFieldProps("password")} />
-            <Link
-              href="/forget-password"
-              className="!text-[#5CF8FD] text-[1.125rem]"
-            >
-              Forgot your pass?
-            </Link>
+    <div className="px-6 py-10 h-screen flex flex-col">
+      <p className="text-[2rem] text-center">Sign In</p>
+      <form onSubmit={handleSubmit} className="h-full mt-10">
+        <div className="flex justify-between flex-col h-full">
+          <div className="flex flex-col gap-2">
+            <CustomInput label="Email" {...getFieldProps("email")} />
+            <div>
+              <CustomPassInput
+                label="Password"
+                {...getFieldProps("password")}
+              />
+              <Link
+                href="/forget-password"
+                className="!text-[#5CF8FD] text-[1.125rem]"
+              >
+                Forgot your pass?
+              </Link>
+            </div>
           </div>
-        </AuthWrapper>
+
+          <div className="flex flex-col gap-4">
+            <CustomButton type="submit">Sign In</CustomButton>
+            <CustomButton type="button" onClick={() => router.push("/sign-up")}>
+              Sign Up
+            </CustomButton>
+          </div>
+        </div>
       </form>
-    </Suspense>
+    </div>
   );
 };
 
