@@ -1,4 +1,4 @@
-const LoadingSVG: React.FC<{ classname: string }> = ({ classname }) => {
+const LoadingSVG: React.FC = () => {
   return (
     <svg
       width="45"
@@ -6,8 +6,6 @@ const LoadingSVG: React.FC<{ classname: string }> = ({ classname }) => {
       viewBox="0 0 45 45"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={classname}
-      // style={{ transform: 'scaleY(-1)' }}
     >
       <path
         fillRule="evenodd"
