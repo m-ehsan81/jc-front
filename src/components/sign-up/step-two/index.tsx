@@ -1,18 +1,33 @@
 import { useFormik } from "formik";
 import { SignUpStepTwoForm, SignUpStepTwoProps } from "./type";
 import { CustomButton, CustomInput } from "@/components/customs";
+import apiClient from "@/lib/axios";
 
 const SignUpStepTwo: React.FC<SignUpStepTwoProps> = ({
   email,
   password,
   handleBackStep,
 }) => {
+  const submitHandler = async (values: SignUpStepTwoForm) => {
+    try {
+      const response = await apiClient.post<ResType<void>>("/Accounts/SignUp", {
+        ...values,
+        email,
+        password,
+      });
+      const { isSuccess } = response.data;
+
+      if (isSuccess) {
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   const { handleSubmit, getFieldProps, touched, errors } =
     useFormik<SignUpStepTwoForm>({
       initialValues: { username: "", age: "" },
-      onSubmit: (values) => {
-        console.log(values);
-      },
+      onSubmit: submitHandler,
     });
 
   return (

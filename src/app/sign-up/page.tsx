@@ -1,12 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CustomStepper } from "@/components/customs";
 import { InitialDataType } from "./type";
 import { SignUpStepOne, SignUpStepTwo, StepThree } from "@/components/sign-up";
+import { useSearchParams } from "next/navigation";
 
 const SignUpPage: React.FC = () => {
-  const [activeStep, setActiveStep] = useState(1);
+  const searchParams = useSearchParams();
+
+  const token = searchParams.get("token");
+
+  const [activeStep, setActiveStep] = useState(token ? 3 : 1);
   const [initialData, setInitialData] = useState<InitialDataType>({
     email: "",
     password: "",
@@ -27,7 +32,7 @@ const SignUpPage: React.FC = () => {
       password={initialData.password}
       handleBackStep={handleBackStep}
     />,
-    <StepThree />,
+    <StepThree token={token || ""} />,
   ];
 
   return (
