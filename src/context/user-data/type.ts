@@ -8,6 +8,7 @@ export interface UserState {
   score: null | number;
   username: string | null;
   email: string | null;
+  limitation: number | null;
   isLoading: boolean;
 }
 
@@ -23,5 +24,5 @@ export interface GetScoreRes {
   score: number;
   username: string | null;
   email: string;
-  limitation: string;
+  limitation: number;
 }

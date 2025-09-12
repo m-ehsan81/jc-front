@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const HomeHeader: React.FC = () => {
   const {
-    state: { username, email },
+    state: { username, email, limitation },
   } = useUserData();
 
   return (
@@ -27,12 +27,14 @@ const HomeHeader: React.FC = () => {
             <CustomSkeleton variant="circular" width="2.5rem" height="2.5rem" />
           )}
 
-          <span>{username || email || <CustomSkeleton width="10rem" />}</span>
+          <span className="text-[1.25rem]">
+            {username || <CustomSkeleton width="10rem" />}
+          </span>
         </div>
       </div>
 
       <span className="text-[1.125rem] flex gap-2">
-        Limited: {email ? "2/3" : <CustomSkeleton width="5rem" />}
+        Limited: {limitation !== null ? `${limitation}/3` : <CustomSkeleton width="5rem" />}
       </span>
     </div>
   );

@@ -29,6 +29,8 @@ const userDataReducer = (state: UserState, action: UserAction): UserState => {
       return {
         ...state,
         score: state.score !== null ? ++state.score : state.score,
+        limitation:
+          state.limitation !== null ? --state.limitation : state.limitation,
       };
     case "SET_USERINFO":
       return {
@@ -44,7 +46,8 @@ const initialState: UserState = {
   score: null,
   username: null,
   email: null,
-  isLoading: false,
+  limitation: null,
+  isLoading: true,
 };
 
 export const UserDataProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -61,11 +64,11 @@ export const UserDataProvider: FC<PropsWithChildren> = ({ children }) => {
           "/Score/GetScore"
         );
 
-        const { email, score, username } = response.data.data;
+        const { email, score, username, limitation } = response.data.data;
 
         dispatch({
           type: "SET_INITIAL_DATA",
-          payload: { score, email, username },
+          payload: { score, email, username, limitation },
         });
       } catch (error) {
         alert(error);
