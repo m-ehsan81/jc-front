@@ -2,13 +2,17 @@ import { useFormik } from "formik";
 import { SignUpStepTwoForm, SignUpStepTwoProps } from "./type";
 import { CustomButton, CustomInput } from "@/components/customs";
 import apiClient from "@/lib/axios";
+import { useState } from "react";
 
 const SignUpStepTwo: React.FC<SignUpStepTwoProps> = ({
   email,
   password,
   handleBackStep,
 }) => {
+  const [loading, setLoading] = useState(false);
+
   const submitHandler = async (values: SignUpStepTwoForm) => {
+    setLoading(true);
     try {
       const response = await apiClient.post<ResType<void>>("/Accounts/SignUp", {
         ...values,
@@ -21,6 +25,8 @@ const SignUpStepTwo: React.FC<SignUpStepTwoProps> = ({
       }
     } catch (error) {
       alert(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -49,7 +55,9 @@ const SignUpStepTwo: React.FC<SignUpStepTwoProps> = ({
         </div>
 
         <div className="flex flex-col gap-4">
-          <CustomButton type="submit">Next</CustomButton>
+          <CustomButton type="submit" isLoading={loading}>
+            Next
+          </CustomButton>
           <CustomButton type="button" onClick={handleBackStep}>
             Back
           </CustomButton>

@@ -14,10 +14,12 @@ import { SignInRes, SignInType } from "./type";
 import { useAuth } from "@/context/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import apiClient from "@/lib/axios";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 
-const SignInPage:React.FC = () => {
+const SignInPage: React.FC = () => {
   const { login } = useAuth();
+
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -25,6 +27,7 @@ const SignInPage:React.FC = () => {
   const fromParams = searchParams.get("from") || "/home";
 
   const submitHandler = async (values: SignInType) => {
+    setLoading(true);
     try {
       const response = await apiClient.post<ResType<SignInRes>>(
         "/Accounts/Login",
@@ -38,6 +41,8 @@ const SignInPage:React.FC = () => {
       }
     } catch (error) {
       alert(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -68,7 +73,9 @@ const SignInPage:React.FC = () => {
           </div>
 
           <div className="flex flex-col gap-4">
-            <CustomButton type="submit">Sign In</CustomButton>
+            <CustomButton type="submit" isLoading={loading}>
+              Sign In
+            </CustomButton>
             <CustomButton type="button" onClick={() => router.push("/sign-up")}>
               Sign Up
             </CustomButton>
