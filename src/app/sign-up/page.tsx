@@ -8,7 +8,7 @@ import {
   CustomStepper,
 } from "@/components/customs";
 import { InitialDataType } from "./type";
-import { SignUpStepOne } from "@/components/sign-up";
+import { SignUpStepOne, SignUpStepTwo } from "@/components/sign-up";
 
 const SignUpPage: React.FC = () => {
   const [activeStep, setActiveStep] = useState(1);
@@ -18,7 +18,17 @@ const SignUpPage: React.FC = () => {
     rePassword: "",
   });
 
-  const steps = [<SignUpStepOne {...initialData} />];
+  const handleNextStep = () => setActiveStep((prev) => ++prev);
+  const handleBackStep = () => setActiveStep((prev) => --prev);
+
+  const steps = [
+    <SignUpStepOne
+      {...initialData}
+      handleNextStep={handleNextStep}
+      setInitialData={setInitialData}
+    />,
+    <SignUpStepTwo email={initialData.email} password={initialData.password} />,
+  ];
 
   return (
     <div className="px-6 py-10 h-screen flex flex-col">

@@ -4,7 +4,7 @@ export interface CustomInputProps
   extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   isError?: boolean;
-  helperText?: string;
+  helperText?: string | boolean;
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
   clickableIcon?: boolean;
