@@ -1,17 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import AuthWrapper from "@/components/auth-warpper";
-import {
-  CustomInput,
-  CustomPassInput,
-  CustomStepper,
-} from "@/components/customs";
+import { CustomStepper } from "@/components/customs";
 import { InitialDataType } from "./type";
 import { SignUpStepOne, SignUpStepTwo, StepThree } from "@/components/sign-up";
 
 const SignUpPage: React.FC = () => {
-  const [activeStep, setActiveStep] = useState(3);
+  const [activeStep, setActiveStep] = useState(1);
   const [initialData, setInitialData] = useState<InitialDataType>({
     email: "",
     password: "",
@@ -32,7 +27,7 @@ const SignUpPage: React.FC = () => {
       password={initialData.password}
       handleBackStep={handleBackStep}
     />,
-    <StepThree />
+    <StepThree />,
   ];
 
   return (
