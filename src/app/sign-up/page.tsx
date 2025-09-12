@@ -8,10 +8,10 @@ import {
   CustomStepper,
 } from "@/components/customs";
 import { InitialDataType } from "./type";
-import { SignUpStepOne, SignUpStepTwo } from "@/components/sign-up";
+import { SignUpStepOne, SignUpStepTwo, StepThree } from "@/components/sign-up";
 
 const SignUpPage: React.FC = () => {
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(3);
   const [initialData, setInitialData] = useState<InitialDataType>({
     email: "",
     password: "",
@@ -27,7 +27,12 @@ const SignUpPage: React.FC = () => {
       handleNextStep={handleNextStep}
       setInitialData={setInitialData}
     />,
-    <SignUpStepTwo email={initialData.email} password={initialData.password} />,
+    <SignUpStepTwo
+      email={initialData.email}
+      password={initialData.password}
+      handleBackStep={handleBackStep}
+    />,
+    <StepThree />
   ];
 
   return (
