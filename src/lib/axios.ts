@@ -67,7 +67,7 @@ apiClient.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${token}`;
         return apiClient(originalRequest);
       } catch (refreshError) {
-        // console.error("Token refresh failed:", refreshError);
+        console.error("Token refresh failed:", refreshError);
         // Cookies.remove("token");
         // Cookies.remove("refreshToken");
         // Cookies.remove("user");

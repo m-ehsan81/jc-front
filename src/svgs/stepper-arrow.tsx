@@ -1,4 +1,4 @@
-const StepperArrowSVG: React.FC = () => {
+const StepperArrowSVG: React.FC<{ className: string }> = ({ className }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -6,6 +6,7 @@ const StepperArrowSVG: React.FC = () => {
       height="10"
       viewBox="0 0 40 10"
       fill="none"
+      className={className}
     >
       <path
         fill-rule="evenodd"

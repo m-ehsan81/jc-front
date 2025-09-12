@@ -16,7 +16,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import apiClient from "@/lib/axios";
 import { Suspense } from "react";
 
-const SignInPage = () => {
+const SignInPage:React.FC = () => {
   const { login } = useAuth();
 
   const router = useRouter();

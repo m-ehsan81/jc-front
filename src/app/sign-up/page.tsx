@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useState } from "react";
 import { CustomStepper } from "@/components/customs";
 import { InitialDataType } from "./type";
 import { SignUpStepOne, SignUpStepTwo, StepThree } from "@/components/sign-up";
@@ -24,15 +24,17 @@ const SignUpPage: React.FC = () => {
   const steps = [
     <SignUpStepOne
       {...initialData}
+      key={1}
       handleNextStep={handleNextStep}
       setInitialData={setInitialData}
     />,
     <SignUpStepTwo
+      key={2}
       email={initialData.email}
       password={initialData.password}
       handleBackStep={handleBackStep}
     />,
-    <StepThree token={token || ""} />,
+    <StepThree key={3} token={token || ""} />,
   ];
 
   return (
@@ -48,4 +50,12 @@ const SignUpPage: React.FC = () => {
   );
 };
 
-export default SignUpPage;
+const SignUp: React.FC = () => {
+  return (
+    <Suspense>
+      <SignUpPage />
+    </Suspense>
+  );
+};
+
+export default SignUp;

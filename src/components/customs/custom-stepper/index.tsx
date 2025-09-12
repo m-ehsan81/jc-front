@@ -25,7 +25,7 @@ const CustomStepper: React.FC<CustomStepperProps> = ({
         <div key={index} className="relative">
           <StepItem step={index + 1} activeStep={activeStep} />
 
-          <StepperArrowSVG classname="absolute left-6 -top-6" />
+          <StepperArrowSVG className="absolute left-6 -top-6" />
         </div>
       ))}
     </div>

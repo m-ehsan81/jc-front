@@ -16,13 +16,13 @@ const StepThree: React.FC<{ token: string }> = ({ token }) => {
         const encodedToken = encodeURIComponent(token);
 
         await apiClient.get(`Accounts/EmailConfirmation?token=${encodedToken}`);
-      } catch (error) {
+      } catch {
         setError(true);
       } finally {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [token]);
 
   if (loading) {
     return (
