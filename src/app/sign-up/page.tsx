@@ -2,23 +2,34 @@
 
 import { useState } from "react";
 import AuthWrapper from "@/components/auth-warpper";
-import { CustomInput, CustomPassInput } from "@/components/customs";
+import {
+  CustomInput,
+  CustomPassInput,
+  CustomStepper,
+} from "@/components/customs";
 import { InitialDataType } from "./type";
+import { SignUpStepOne } from "@/components/sign-up";
 
 const SignUpPage: React.FC = () => {
+  const [activeStep, setActiveStep] = useState(1);
   const [initialData, setInitialData] = useState<InitialDataType>({
     email: "",
     password: "",
+    rePassword: "",
   });
 
+  const steps = [<SignUpStepOne {...initialData} />];
+
   return (
-    <AuthWrapper title="Sign Up" type="sign-up">
-      <CustomInput label="User Name" />
+    <div className="px-6 py-10 h-screen flex flex-col">
+      <div className="flex justify-between items-center">
+        <p className="text-[2rem] text-left">Sign Up</p>
 
-      <CustomPassInput label="Password" />
+        <CustomStepper activeStep={activeStep} totlaSteps={3} />
+      </div>
 
-      <CustomPassInput label="Re-PassWorld" />
-    </AuthWrapper>
+      {steps[activeStep - 1]}
+    </div>
   );
 };
 

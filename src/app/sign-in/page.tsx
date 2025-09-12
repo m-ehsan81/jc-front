@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useFormik } from "formik";
 
-import AuthWrapper from "@/components/auth-warpper";
+// import AuthWrapper from "@/components/auth-warpper";
 import {
   CustomButton,
   CustomInput,

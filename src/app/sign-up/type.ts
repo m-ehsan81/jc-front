@@ -1,4 +1,5 @@
 export interface InitialDataType {
-  email: "";
-  password: "";
+  email: string;
+  password: string;
+  rePassword: string;
 }
