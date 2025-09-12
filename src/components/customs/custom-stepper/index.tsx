@@ -7,8 +7,8 @@ const StepItem: React.FC<{ step: number; activeStep: number }> = ({
 }) => {
   return (
     <span
-      aria-selected={step === activeStep}
-      className="inline-block w-6 h-6 border border-[#5CF8FD] rounded-full text-center text-[1.25rem] text-[#5CF8FD] bg-transparent leading-6 aria-selected:bg-[#5CF8FD] aria-selected:text-[#1C274C]"
+      aria-checked={step <= activeStep}
+      className="inline-block w-6 h-6 border border-[#5CF8FD] rounded-full text-center text-[1.25rem] text-[#5CF8FD] bg-transparent leading-6 aria-checked:bg-[#5CF8FD] aria-checked:text-[#1C274C]"
     >
       {step}
     </span>
