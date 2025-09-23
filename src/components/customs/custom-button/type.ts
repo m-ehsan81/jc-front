@@ -1,7 +1,10 @@
-import { ButtonHTMLAttributes, ReactNode } from "react";
+import { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from "react";
 
 export interface CustomButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement> {
+  extends DetailedHTMLProps<
+    ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement
+  > {
   startIcon?: ReactNode;
   endIcon?: ReactNode;
   isLoading?: boolean;
