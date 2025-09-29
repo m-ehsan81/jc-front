@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { AuthProvider } from "@/context/auth";
 import { UserDataProvider } from "@/context/user-data";
+import SnackbarProviderClient from "./snackbar-provider-client";
 
 const irishGrover = Irish_Grover({
   weight: "400",
@@ -25,7 +26,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${irishGrover.variable}`}>
         <AuthProvider>
-          <UserDataProvider>{children}</UserDataProvider>
+          <SnackbarProviderClient>
+            <UserDataProvider>{children}</UserDataProvider>
+          </SnackbarProviderClient>
         </AuthProvider>
       </body>
     </html>

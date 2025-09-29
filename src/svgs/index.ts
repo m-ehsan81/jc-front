@@ -12,3 +12,6 @@ export { default as ArrowCircleRightSVG } from "./arrow-circle-right";
 export { default as EyeSVG } from "./eye";
 export { default as LoadingSVG } from "./loading";
 export { default as StepperArrowSVG } from "./stepper-arrow";
+export { default as CloseCircleSVG } from "./close-circle";
+export { default as TickCircleSVG } from "./tick-circle";
+export { default as InfoCircleSVG } from "./info-circle";
